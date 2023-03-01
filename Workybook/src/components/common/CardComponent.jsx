@@ -29,6 +29,8 @@ function CardComponent({ cardWidth = 215, item, setRerender }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
   const [isLikeLoaded, setIsLikeLoaded] = useState(true);
+  const { classes } = useSelector((state) => state.classroom);
+
   const componentRef = useRef();
 
   const dispatch = useDispatch();
@@ -109,6 +111,27 @@ function CardComponent({ cardWidth = 215, item, setRerender }) {
     }
   ];
 
+  const itemsNoClass = [
+    {
+      label: <span className='ml-2'>PRINT</span>,
+      key: '1',
+      icon: <ADImage width={25} src={printIcon} alt='print' />,
+      onClick: handlePrint
+    },
+    {
+      label: <span className='ml-2'>ADD TO COLLECTION</span>,
+      key: '3',
+      icon: <ADImage width={25} src={folderIcon} alt='add to collection' />,
+      onClick: showCollectionModal
+    },
+    {
+      label: <span className='ml-2'>SHARE</span>,
+      key: '4',
+      icon: <ADImage width={25} src={shareIcon} alt='share' />,
+      onClick: showShareModal
+    }
+  ];
+
   const addToCollectionModal = <AddToCollectionModal closable={false} open={isCollectionModalOpen} onOk={handleCollectionModalOk} onCancel={handleCollectionModalCancel} />;
   const shareModal = <ShareModal open={isShareModalOpen} onOk={handleShareModalOk} onCancel={handleShareModalCancel} path={[`/my-library/worksheet/${item._id}`]} item={item} />;
   const assignModal = <AssignModal closable={false} open={isAssignModalOpen} onOk={handleAssignModalOk} onCancel={handleAssignModalCancel} />;
@@ -172,7 +195,7 @@ function CardComponent({ cardWidth = 215, item, setRerender }) {
             <Dropdown
               onClick={() => dispatch(setCurrentWorksheet(item))}
               menu={{
-                items
+                items: classes?.list?.length > 0 ? items : itemsNoClass
               }}
               trigger={['click']}
               placement='topLeft'

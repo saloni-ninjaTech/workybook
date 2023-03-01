@@ -29,6 +29,7 @@ function ThumbnailCard({ className, cardWidth, id, cardChecked, collection, thum
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
   const [display, setDisplay] = useState(false);
   const navigate = useNavigate();
+  const { classes } = useSelector((state) => state.classroom);
 
   const dispatch = useDispatch();
 
@@ -94,6 +95,27 @@ function ThumbnailCard({ className, cardWidth, id, cardChecked, collection, thum
     }
   ];
 
+  const itemsNoClass = [
+    {
+      label: <span className='ml-2'>PRINT</span>,
+      key: '1',
+      icon: <ADImage width={25} src={printIcon} alt='print' />,
+      onClick: handlePrint
+    },
+    {
+      label: <span className='ml-2'>ADD TO COLLECTION</span>,
+      key: '3',
+      icon: <ADImage width={25} src={folderIcon} alt='add to collection' />,
+      onClick: showCollectionModal
+    },
+    {
+      label: <span className='ml-2'>SHARE</span>,
+      key: '4',
+      icon: <ADImage width={25} src={shareIcon} alt='share' />,
+      onClick: showShareModal
+    }
+  ];
+
   const shareModal = <ShareModal open={isShareModalOpen} onOk={handleShareModalOk} onCancel={handleShareModalCancel} path={[`/collection/${id}`]} multiple />;
   const copyToCollectionModal = <CopyToCollectionModal open={isCollectionModalOpen} onOk={handleCollectionModalOk} onCancel={handleCollectionModalCancel} />;
   // const assignModal = <AssignModal forCollection open={isAssignModalOpen} onOk={handleAssignModalOk} onCancel={handleAssignModalCancel} />;
@@ -141,7 +163,7 @@ function ThumbnailCard({ className, cardWidth, id, cardChecked, collection, thum
             onClick={() => dispatch(setCurrentCollection(collection))}
             trigger={['click']}
             menu={{
-              items
+                items:classes?.list?.length > 0 ? items : itemsNoClass
             }}
             placement='topLeft'
             arrow

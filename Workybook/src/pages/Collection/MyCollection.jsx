@@ -22,6 +22,8 @@ import Spinner from '../../components/spinner/Spinner';
 function MyCollection() {
   const { user } = useSelector((state) => state.auth);
   const assignments = useSelector((state) => state.assignment.assignments);
+  const { classes } = useSelector((state) => state.classroom);
+
 
   const authToken = user?.payload?.verification?.token;
   const { id } = useParams();
@@ -150,12 +152,14 @@ function MyCollection() {
                     </div>
                     <div className='text-xs text-gray-500'>PRINT</div>
                   </Col>
-                  <Col xs={24} lg={8} className='flex items-center border-y-0 border-l-0 border-solid'>
-                    <ADButton type='text' className='text-2xl mr-3 flex !p-0 text-gray-400 hover:text-gray-500' onClick={showAssignModal}>
-                      <MdAssignmentTurnedIn />
-                      <div className='text-xs pr-4'>ASSIGN</div>
-                    </ADButton>
-                  </Col>
+                  {(classes?.list?.length > 0) && (
+                    <Col xs={24} lg={8} className='flex items-center border-y-0 border-l-0 border-solid'>
+                      <ADButton type='text' className='text-2xl mr-3 flex !p-0 text-gray-400 hover:text-gray-500' onClick={showAssignModal}>
+                        <MdAssignmentTurnedIn />
+                        <div className='text-xs pr-4'>ASSIGN</div>
+                      </ADButton>
+                    </Col>
+                  )}
                   <Col
                     xs={24}
                     lg={8}
